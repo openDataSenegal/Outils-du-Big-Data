@@ -57,21 +57,28 @@ Le mot de passe et le username ont été configuré automatiquement par elastics
   'bin/elasticsearch-create-enrollment-token -s node'.
 ```
 # Configuration Kibana
-## Configuration de Kibana
-Pour configurer kibana, il faut ouvrir le fichier kibana-8.3.3-linux-x86_64/config/kibana.yml et appliquer les modifications suivantes :
-* Décommenter et modifier la ligne 43 comme ci-dessous
+## Configuration de la connexion entre Elasticsearch et Kibana
+Pour que Kibana accède à Elasticsearch, il faut ouvrir le fichier kibana-8.3.3-linux-x86_64/config/kibana.yml et appliquer les modifications suivantes :
+Décommenter et modifier la ligne 43 comme ci-dessous
   ```
       elasticsearch.hosts: ['https://localhost:9200', 'url_master2', 'url_master3']
   ```
   ou les URLS à l'intérieur des [] sont les URLs de la liste des serveurs masters du cluster Elastcisearch
-* Créer le repertoire kibana-8.3.3-linux-x86_64/config/certs/ et copier les certificats https qui sont destinés à Kibana. Il faut ensuite modifier dans le fichier kibana-8.3.3-linux-x86_64/config/kibana.yml les lignes 37, 38, 39 pour le transformer ainsi: 
+## Configuration de la connexion HTTPS entre les navigateurs et Kibana
+Pour chiffrer les communications entre Kibana et les navigateurs, il faut activer le chiffrage https; Pour ce faire, il faut créer le repertoire kibana-8.3.3-linux-x86_64/config/certs/ et copier les certificats https qui sont destinés à Kibana. Il faut ensuite modifier dans le fichier kibana-8.3.3-linux-x86_64/config/kibana.yml les lignes 37, 38, 39 pour le transformer ainsi: 
 ```
   server.ssl.enabled: true
   server.ssl.certificate: config/certs/client.cer 
   server.ssl.key: config/certs/client.key
 ```
-Ou clien.cer et client.key sont les certificats https destinés à Kibana
-
+ou clien.cer et client.key sont les certificats https destinés à Kibana
+## Configuration de la connexion HTTPS Entre Kibana et Elasticsearch
+Pour chiffrer les communications entre Kibana et Elasticsearch, il faut :
+* Ajouter la ligne  ci-dessous dans le noeud master elasticsearch sur lequel Kibana va faire ces requetes 
+```
+  xpack.security.http.ssl.client_authentication: required
+```
+Cette Ligne est à ajouter dans le fichier de configuration elasticsearch-8.3.3/config/elasticsearch.yml de elasticsearch.
 
 ## Configuration des Tokens
 
