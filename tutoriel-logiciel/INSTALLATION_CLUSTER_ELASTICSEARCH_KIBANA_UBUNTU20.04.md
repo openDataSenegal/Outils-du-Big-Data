@@ -57,7 +57,16 @@ Le mot de passe et le username ont été configuré automatiquement par elastics
   'bin/elasticsearch-create-enrollment-token -s node'.
 ```
 # Configuration Kibana
-## Configuration de Kibana pour acceder aux hosts de Elasticsearch
+## Configuration de Kibana
 Pour configurer kibana, il faut ouvrir le fichier kibana-8.3.3-linux-x86_64/config/kibana.yml et appliquer les modifications suivantes :
+* Décommenter et modifier la ligne 43 comme ci-dessous
+  ```
+      elasticsearch.hosts: ['https://localhost:9200', 'url_master2', 'url_master3']
+  ```
+  ou les URLS à l'intérieur des [] sont les URLs de la liste des serveurs masters du cluster Elastcisearch
 * 
+
+
+
+## Configuration des Tokens
 
