@@ -57,6 +57,17 @@ Le mot de passe et le username ont été configuré automatiquement par elastics
   'bin/elasticsearch-create-enrollment-token -s node'.
 ```
 # Configuration Kibana
+## Configuration de Kibana pour se connecter à Elasticsearch
+La premiere chose à faire est de connecter Kibana au cluster Elasticsearch. Pour se faire, il faut se rendre dans el fichier kibana-8.3.3-linux-x86_64/config/kibana.yml
+
+Pour configurer Kibana, la premiere chose à faire c'est de se rendre en ligne de commande dans le repertoire kibana-8.3.3-linux-x86_64.
+Il faut ensuite lancer en ligne de commande la commande suivante :
+```
+  ./bin/kibana
+```
+Cette commande prendra un peut de temps avant de finir sont executions.
+## Configuration des Tokens
+
 
 
 
