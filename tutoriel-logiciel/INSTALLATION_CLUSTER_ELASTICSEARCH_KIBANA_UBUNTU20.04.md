@@ -20,13 +20,43 @@ la version de kibana et de elasticsearch utilisée ici autogenère automatiqueme
 Donc, aucune configuration HTPPS n'est nécessaire à moins de vouloir configurer soit même de nouveaux certificat HTTPS.
 ## Configuration du TAS du JVM Elasticsearch
 Il faut configurer le TAS du JVM à 4giga. Pour cela, il faut se rendre dans le fichier elasticsearch-8.3.3/config/jvm.options et décommenter les lignes 32 et 33 (-Xms4g et -Xmx4g)
-
-
+## configuration du nom du cluster
+On peut configurer le nom de notre JVM en mettant un nom plus parlant pour notre projet. Pour cela, se rendre dans le fichier elasticsearch-8.3.3/config/elasticsearch.yml et décommanter la ligne 17 et changer le nom du claster. 
+```
+  cluster.name: nom-de-mon-cluster
+```
+# Lancement du cluster Elasticsearch
 Une fois, cela fait, on peut tester si notre elasticsearch fonction correctement en se plaçant en ligne de commande dans le répertoire elasticsearch-8.3.3 et en lançant la commande :
 ```
   ./bin/elasticsearch
 ```
 Alors, vous pouvez vérifier si le logiciel a bien été installer en lacant à partir d'une autre ligne de commande la commande ci-dessous :
 ```
-  curl --insecure -X GET -u elastic:4iDeAhwiNvjaU2nAucn8 "https://localhost:9200/"
+  curl --insecure -X GET -u elastic:mots-depasse "https://localhost:9200/"
 ```
+Le mot de passe et le username ont été configuré automatiquement par elasticsearch. Lors du lancement du cluster pour la première fois, vous verrez dans le terminal les authentifications de l'utilisateur elastic
+
+```
+  The generated password for the elastic built-in superuser is:
+  <password>
+
+  The enrollment token for Kibana instances, valid for the next 30 minutes:
+  <enrollment-token>
+
+  The hex-encoded SHA-256 fingerprint of the generated HTTPS CA DER-encoded certificate:
+  <fingerprint>
+
+  You can complete the following actions at any time:
+  Reset the password of the elastic built-in superuser with
+  'bin/elasticsearch-reset-password -u elastic'.
+
+  Generate an enrollment token for Kibana instances with
+  'bin/elasticsearch-create-enrollment-token -s kibana'.
+
+  Generate an enrollment token for Elasticsearch nodes with
+  'bin/elasticsearch-create-enrollment-token -s node'.
+```
+# Configuration Kibana
+
+
+
