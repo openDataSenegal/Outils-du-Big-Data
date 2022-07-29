@@ -64,8 +64,13 @@ Pour configurer kibana, il faut ouvrir le fichier kibana-8.3.3-linux-x86_64/conf
       elasticsearch.hosts: ['https://localhost:9200', 'url_master2', 'url_master3']
   ```
   ou les URLS à l'intérieur des [] sont les URLs de la liste des serveurs masters du cluster Elastcisearch
-* 
-
+* Créer le repertoire kibana-8.3.3-linux-x86_64/config/certs/ et copier les certificats https qui sont destinés à Kibana. Il faut ensuite modifier dans le fichier kibana-8.3.3-linux-x86_64/config/kibana.yml les lignes 37, 38, 39 pour le transformer ainsi: 
+```
+  server.ssl.enabled: true
+  server.ssl.certificate: config/certs/client.cer 
+  server.ssl.key: config/certs/client.key
+```
+Ou clien.cer et client.key sont les certificats https destinés à Kibana
 
 
 ## Configuration des Tokens
