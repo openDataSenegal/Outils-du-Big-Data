@@ -135,7 +135,7 @@ Donc, aucune configuration HTPPS n'est nécessaire à moins de vouloir configure
 ### Configuration du TAS du JVM Elasticsearch
 Il faut configurer le TAS du JVM à 4giga. Pour cela, il faut se rendre dans le fichier elasticsearch-8.3.3/config/jvm.options et décommenter les lignes 32 et 33 (-Xms4g et -Xmx4g)
 ### configuration du nom du cluster
-Il faut configurer le nom de notre Cluster en mettant le meme nom identique que celui utilisé pour le noeud master. Pour cela, se rendre dans le fichier elasticsearch-8.3.3/config/elasticsearch.yml et décommanter la ligne 17 et changer le nom du claster. 
+Il faut configurer le nom de notre Cluster en mettant le même nom identique que celui utilisé pour le nœud master. Pour cela, se rendre dans le fichier elasticsearch-8.3.3/config/elasticsearch.yml et décommenter la ligne 17 et changer le nom du cluster. 
 ```
   cluster.name: nom-de-mon-cluster
 ```
@@ -158,7 +158,11 @@ Pour les prochains lancements du nœud, il faudra juste exécuter la commande ci
 ```
 
 ### Remarque : 
-- Si le noeud est installé dans une autre machine, penser à changer les adresses de discovery.seed_hosts: ["127.0.0.1:9300"] en mettant les adresses des masters 
+- Si le nœud est installé dans une autre machine, penser à changer les adresses de 
+```
+  discovery.seed_hosts: ["127.0.0.1:9300"]
+```
+en mettant les adresses des masters
 
 
 
