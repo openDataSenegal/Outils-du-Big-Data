@@ -118,7 +118,7 @@ Sur la ligne 170, changer elasticsearch.hosts comme suite :
       xpack.fleet.outputs: [{id: fleet-default-output, name: default, is_default: true, is_default_monitoring: true, type: elasticsearch, hosts: ['https://localhost:9200', 'url_master2', 'url_master3'], ca_trusted_fingerprint: ac21f15a8db62216e1c92763fcebaa73609ecddbab06d2075e814d15de879668}]
   ```
 Redémarrer en suite Kibana et Elasticsearch.
-# Ajouter un nouveau Noeuds
+# Ajouter un nouveau Noeud
 
 Pour ajouter un nouveau noeuds Elasticsearch sur une autre machine. Il faut télécharger la meme version des binaires utilisée pour le noeud master elasticsearch. Dans notre cas, on peut le faire sur notre nouvelle machine avec la commande ci-dessous:
 ```
@@ -134,6 +134,11 @@ la version de elasticsearch utilisée ici, autogenère automatiquement des certi
 Donc, aucune configuration HTPPS n'est nécessaire à moins de vouloir configurer soit même de nouveaux certificat HTTPS.
 ### Configuration du TAS du JVM Elasticsearch
 Il faut configurer le TAS du JVM à 4giga. Pour cela, il faut se rendre dans le fichier elasticsearch-8.3.3/config/jvm.options et décommenter les lignes 32 et 33 (-Xms4g et -Xmx4g)
+### configuration du nom du cluster
+Il faut configurer le nom de notre Cluster en mettant le meme nom identique que celui utilisé pour le noeud master. Pour cela, se rendre dans le fichier elasticsearch-8.3.3/config/elasticsearch.yml et décommanter la ligne 17 et changer le nom du claster. 
+```
+  cluster.name: nom-de-mon-cluster
+```
 ### Création d'un token d'inscription pour ce noeud
 Pour ajouter un nouveau à notre cluster, il nous faudra créer un token pour ce nœud. Pour cela, il faut se rendre dans le répertoire du nœud master ou de n'importe quel nœud du cluster et exécuter la commande ci-dessous :
 ```
@@ -152,7 +157,8 @@ Pour les prochains lancements du nœud, il faudra juste exécuter la commande ci
   ./bin/elasticsearch
 ```
 
-
+### Remarque : 
+- Si le noeud est installé dans une autre machine, penser à changer les adresses de discovery.seed_hosts: ["127.0.0.1:9300"] en mettant les adresses des masters 
 
 
 
