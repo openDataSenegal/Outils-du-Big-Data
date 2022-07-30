@@ -128,14 +128,17 @@ Pour ajouter un nouveau à notre cluster, il nous faudra créer un token pour ce
   ./bin/elasticsearch-create-enrollment-token -s node
 ```
 Cette commande va générer un token.
-Il faut ensuite se rendre dans le répertoire du nœud et exécuter la commande ci-dessous :
+Il faut ensuite se rendre dans le répertoire du nœud et exécuter la commande ci-dessous pour le premier lancement du noeud:
 ```
   ./bin/elasticsearch --enrollment-token 'enrollment-token'
 ```
 Ou 'enrollment-token' est le token généré ci-dessus.
 Cette opération va finaliser le lancement de notre nouveau nœud.
-Il faut utiliser cette opération pour relancer le nouveau à chaque fois que c'est arrêté.
 
+Pour les prochains lancements du nœud, il faudra juste exécuter la commande ci-dessous :
+```
+  ./bin/elasticsearch
+```
 
 
 
