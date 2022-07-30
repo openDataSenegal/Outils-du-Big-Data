@@ -79,6 +79,23 @@ Pour chiffrer les communications entre Kibana et Elasticsearch, il faut :
   xpack.security.http.ssl.client_authentication: required
 ```
 Cette Ligne est à ajouter dans le fichier de configuration elasticsearch-8.3.3/config/elasticsearch.yml de elasticsearch.
+Normallement avec cette version de Kibana et de elasticsearch. Le chiffrage des communications entre Kibana et elasticsearch est activé par défaut.
 
-## Configuration des Tokens
+## Configuration des Tokens Et lancement de Kibana
+Une fois les modifications ci-dessus effectuées, il faut maintenant lancer Kibana en executant la commande ci-dessous à partir du repertoire kibana-8.3.3-linux-x86_64 :
+```
+  ./bin/kibana
+```
+Cette commande prendra quelques minutes pour se lancer completement.
+Une fois l'execution de cette commande terminée, il faut ouvrir dans un navigateur (https://localhost:5601/)[https://localhost:5601/]. Alors, il nous demandera de fournir un Token.
+Il faut repartir dans le repertoire de Elasticsearch et lancer la commande :
+```
+  ./bin/elasticsearch-create-enrollment-token -s kibana
+```
+Cela va générer un Token en ligne de commande qu'il faudra copié et le mettre dans l'interface Kibana.
+Ensuite Il faut cliquer sur le bouton de gauche.
+Après quelques secondes, Kibana va nous rediriger vers la page d'authentification. On pourra s'authentifier avec les identifiants elastcisearch
+
+
+
 
