@@ -96,6 +96,6 @@ Cela va générer un Token en ligne de commande qu'il faudra copié et le mettre
 Ensuite Il faut cliquer sur le bouton de gauche.
 Après quelques secondes, Kibana va nous rediriger vers la page d'authentification. On pourra s'authentifier avec les identifiants elastcisearch
 
-
+# Ajouter un nouveau Noeuds
 
 
