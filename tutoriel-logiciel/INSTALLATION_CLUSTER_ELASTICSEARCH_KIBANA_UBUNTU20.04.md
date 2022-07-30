@@ -69,15 +69,14 @@ La prémière choses à faire pour la configuration de Kibana est la génératio
     openssl pkcs12 -in /chemin_complet/elasticsearch-8.3.3/config/certs/http.p12 -out client.key -nocerts -nodes
  ```
 Utilisé le mot de passe généré précédement quand on vous demandera de fournir le mot de passe.
-Prendre 
 ## Configuration de la connexion HTTPS entre les navigateurs et Kibana
-Pour la configuration de Kibana, il faut commencer d'abord par chiffrer les communications entre Kibana et les navigateurs. Pour chiffrer les communications entre Kibana et les navigateurs, il faut activer le chiffrage HTTPS; Pour ce faire, il faut créer le répertoire kibana-8.3.3-linux-x86_64/config/certs/ et copier les certificats HTTPS qui sont destinés à Kibana. Il faut ensuite modifier dans le fichier kibana-8.3.3-linux-x86_64/config/kibana.yml les lignes 37, 38, 39 pour le transformer ainsi:
+Il faut maintenant chiffrer les communications entre Kibana et les navigateurs. Pour chiffrer les communications entre Kibana et les navigateurs, il faut activer le chiffrage HTTPS; Pour ce faire, il faut créer le répertoire kibana-8.3.3-linux-x86_64/config/certs/ et copier les certificats HTTPS générés précedents (client.crt, client.key) qui sont destinés à Kibana. Il faut ensuite modifier dans le fichier kibana-8.3.3-linux-x86_64/config/kibana.yml les lignes 37, 38, 39 pour le transformer ainsi:
 ```
   server.ssl.enabled: true
-  server.ssl.certificate: config/certs/client.cer 
+  server.ssl.certificate: config/certs/client.crt 
   server.ssl.key: config/certs/client.key
 ```
-Ou clien.cer et client.key sont les certificats HTTPS destinés à Kibana.
+Ou clien.crt et client.key sont les certificats HTTPS destinés à Kibana.
 
 ## Configuration des Tokens Et lancement de Kibana
 Une fois les modifications ci-dessus effectuées, il faut maintenant lancer Kibana en executant la commande ci-dessous à partir du repertoire kibana-8.3.3-linux-x86_64 :
