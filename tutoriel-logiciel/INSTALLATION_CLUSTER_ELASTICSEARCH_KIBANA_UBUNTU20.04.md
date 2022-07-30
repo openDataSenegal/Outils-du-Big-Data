@@ -57,6 +57,19 @@ Le mot de passe et le username ont été configuré automatiquement par elastics
   'bin/elasticsearch-create-enrollment-token -s node'.
 ```
 # Configuration Kibana
+## Création des certificats HTTPS destinés à Kibana
+La prémière choses à faire pour la configuration de Kibana est la génération des certificats HTTPS. Pour se faire, il faut se rendre au repertoire de Elasticsearch et executer effectuer les operations Suivantes:
+* Mot de passe du conteneur http.p12 : executer la commande ci-dessous pour obtenir le mot de passe de http.
+ ```
+    ./bin/elasticsearch-keystore show xpack.security.http.ssl.keystore.secure_password
+ ```
+* Génération des certificats destinés à Kibana : Utiliser le mot de passe généré précédement pour obtenir les certificats en executant les commandes ci-dessous:
+ ```
+    openssl pkcs12 -in /chemin_complet/elasticsearch-8.3.3/config/certs/http.p12 -out client.crt -clcerts -nokeys
+    openssl pkcs12 -in /chemin_complet/elasticsearch-8.3.3/config/certs/http.p12 -out client.key -nocerts -nodes
+ ```
+Utilisé le mot de passe généré précédement quand on vous demandera de fournir le mot de passe.
+Prendre 
 ## Configuration de la connexion HTTPS entre les navigateurs et Kibana
 Pour la configuration de Kibana, il faut commencer d'abord par chiffrer les communications entre Kibana et les navigateurs. Pour chiffrer les communications entre Kibana et les navigateurs, il faut activer le chiffrage HTTPS; Pour ce faire, il faut créer le répertoire kibana-8.3.3-linux-x86_64/config/certs/ et copier les certificats HTTPS qui sont destinés à Kibana. Il faut ensuite modifier dans le fichier kibana-8.3.3-linux-x86_64/config/kibana.yml les lignes 37, 38, 39 pour le transformer ainsi:
 ```
