@@ -35,6 +35,12 @@ Cette commande se connecte à zookeepeer qui est ouvert par défaut au port 2181
 On peut configurer zookeepeer en modifiant les informations contenues dans le fichier /kafka_2.12-3.2.1/config/zookeeper.properties
 - Pour changer le port, modifier clientPort=2181 en mettant la valeur du port souhaitée.
 ## Lancement du noeud kafka
-Pour 
-
+Une fois que le Zookeepeer est lancé, on peut alors lancer le noeud Kafka en ouvrant un nouveau terminale dans le repertoire /kafka_2.12-3.2.1/ et en executant la commande ci-dessous:
+```
+   ./bin/kafka-server-start.sh ./config/server.properties
+```
+## Configuration de Kafka
+to do
+## Ajouter un nouveau noeud à notre cluster
+to do
 
