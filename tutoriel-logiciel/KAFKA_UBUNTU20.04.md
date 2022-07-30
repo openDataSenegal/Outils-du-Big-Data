@@ -41,6 +41,14 @@ Une fois que le Zookeepeer est lancé, on peut alors lancer le noeud Kafka en ou
 ```
 ## Configuration de Kafka
 to do
+
+
+
 ## Ajouter un nouveau noeud à notre cluster
-to do
+Pour ajouter un nouveau nœud à notre cluster, il suffit de télécharger la même version de Kafka qui a été téléchargé et de le dézipper dans la machine de destination. Cela se fait avec les commandes ci-dessous dans notre cas :
+```
+    wget https://dlcdn.apache.org/kafka/3.2.1/kafka_2.12-3.2.1.tgz
+    tar xzf kafka_2.12-3.2.1.tgz
+```
+Il faut ensuite modifier la configuration du nouveau noeud de 
 
