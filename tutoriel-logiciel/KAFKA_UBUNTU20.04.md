@@ -33,15 +33,30 @@ On peut tester que zookeepeer a bien été lancé en executant la commande ci-de
 Cette commande se connecte à zookeepeer qui est ouvert par défaut au port 2181.
 ## Configuration de zookeepeer
 On peut configurer zookeepeer en modifiant les informations contenues dans le fichier /kafka_2.12-3.2.1/config/zookeeper.properties
-- Pour changer le port, modifier clientPort=2181 en mettant la valeur du port souhaitée.
+- Pour changer le port, d'écoute de zookeepeer, il  faut changer la valeur de clientPort qui se trouve à la ligne 18 du fichier kafka_2.12-3.2.1/config/zookeeper.properties et mettre la nouvelle valeur du port 
+```
+    clientPort=2181
+```
+- Pour changer 
+
+en mettant la valeur du port souhaitée.
 ## Lancement du noeud kafka
 Une fois que le Zookeepeer est lancé, on peut alors lancer le noeud Kafka en ouvrant un nouveau terminale dans le repertoire /kafka_2.12-3.2.1/ et en executant la commande ci-dessous:
 ```
    ./bin/kafka-server-start.sh ./config/server.properties
 ```
 ## Configuration de Kafka
-to do
-
+Pour configurer Kafka, il faut se rendre dans le fichier kafka_2.12-3.2.1/config/server.properties et effectuer les modifications suivantes :
+* On peut changer l'id du serveur kafka appelé broker. Chaque nœud du serveur Kafka doit avoir une id différente. Pour changer l'id du broker Kafka, il faut se rendre dans le fichier kafka_2.12-3.2.1/config/server.properties à la ligne 24 et changer la valeur:
+```
+    broker.id=0
+```
+* Pour éviter que le producer envoie les messages par lots de 200 avec une latence maximale de 1000 ms qui est la configuration par défaut, il faut ajouter les deux lignes de commandes ci-dessous dans le fichier kafka_2.12-3.2.1/config/server.properties
+```
+    --batch-size=1
+    --timeout=0
+```
+* 
 
 
 ## Ajouter un nouveau noeud à notre cluster
@@ -52,3 +67,4 @@ Pour ajouter un nouveau nœud à notre cluster, il suffit de télécharger la m�
 ```
 Il faut ensuite modifier la configuration du nouveau noeud de 
 
+# Installation de Kafka Manager
