@@ -87,7 +87,7 @@ Pour configurer Kafka, il faut se rendre dans le fichier kafka_2.12-3.2.1/config
 ```
 ## Configuration HTTPS de Kafka
 
-#### Génération des certificats HTTPS (lien)[https://www.ibm.com/docs/fr/qsip/7.4?topic=options-configuring-apache-kafka-enable-client-authentication]
+#### Génération des certificats HTTPS [lien][(https://www.ibm.com/docs/fr/qsip/7.4?topic=options-configuring-apache-kafka-enable-client-authentication)
 La premiere chose à faire pour chiffrer les communications de Kafka est la génération des certificats. Pour se faire, il faut executer la commande ci-dessous dans une ligne de commande:
 ```
     keytool -keystore server.keystore.jks -alias sawadogo_kafka_serveur -validity 365 -genkey -keyalg RSA
@@ -177,4 +177,4 @@ Il faut ensuite modifier la configuration du nouveau noeud de
 # Installation de Kafka Manager
 
 
-#### Remarque : (Documentation Kafka)[https://kafka.apache.org/documentation/]
+#### Remarque : [Documentation Kafka](https://kafka.apache.org/documentation/)
