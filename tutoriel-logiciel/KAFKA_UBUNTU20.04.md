@@ -156,11 +156,14 @@ En suite, il faut changer le listerners de la ligne 34 en y ajoutant le protocol
 Il faut aussi ajouter les lignes ci-dessous au meme fichier kafka_2.12-3.2.1/config/server.properties:
 ```
     ssl.client.auth=required
-    ssl.keystore.location=/somefolder/kafka.server.keystore.jks
-    ssl.keystore.password=test1234
-    ssl.key.password=test1234
-    ssl.truststore.location=/somefolder/kafka.server.truststore.jks
-    ssl.truststore.password=test1234
+    ssl.keystore.location=/mnt/c/Users/jmsawadogo/Desktop/usefulRepo/testKafKaZookeper/kafka_2.12-3.2.1/kafka.server.keystore.jks
+    ssl.keystore.password=sawadogo1234
+    ssl.key.password=sawadogo1234
+    ssl.truststore.location=/mnt/c/Users/jmsawadogo/Desktop/usefulRepo/testKafKaZookeper/kafka_2.12-3.2.1/kafka.server.truststore.jks
+    ssl.truststore.password=sawadogo1234
+    ssl.enabled.protocols=TLSv1.2
+    ssl.truststore.type=JKS
+    ssl.keystore.type=JKS
 ```
 
 
