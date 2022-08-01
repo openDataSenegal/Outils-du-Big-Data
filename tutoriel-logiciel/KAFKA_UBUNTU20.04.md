@@ -21,6 +21,11 @@ Il faut ensuite décomprésser les binaires avec la commande ci-dessous:
 ```
     tar xzf kafka_2.12-3.2.1.tgz
 ```
+Se rendre en ligne de commande dans le dossier kafka_2.12-3.2.1 et crééer le dossier qui contiendront les données zookeepeer et les logs kafkas. 
+```
+    mkdir jms-zookeeper-data
+    mkdir jms-sorties-logs
+```
 ## Lancement de Zookeeper
 La version de kafka téléchargée inclus les binaires du gestionnaire de cluster zookeepeer. Il faut toujours lancer zookeepeer avant de lancer le noeud de kafka. Pour cela, il faut se placer dans le repertoire kafka_2.12-3.2.1 et executer la commande suivante:
 ```
@@ -37,9 +42,12 @@ On peut configurer zookeepeer en modifiant les informations contenues dans le fi
 ```
     clientPort=2181
 ```
-- Pour changer 
 
-en mettant la valeur du port souhaitée.
+- Pour changer le dossier de stockage des données de zookeepeer et utiliser les dossiers qu'on a créés. Il faut changer le chemain dataDir à la ligne 17 du fichier /kafka_2.12-3.2.1/config/zookeeper.properties et mettre le chemin du repertoire ou on veut mettre les données dans notre cas:
+```
+    dataDir=/chemin/kafka_2.12-3.2.1/jms-zookeeper-data
+```
+
 ## Lancement du noeud kafka
 Une fois que le Zookeepeer est lancé, on peut alors lancer le noeud Kafka en ouvrant un nouveau terminale dans le repertoire /kafka_2.12-3.2.1/ et en executant la commande ci-dessous:
 ```
