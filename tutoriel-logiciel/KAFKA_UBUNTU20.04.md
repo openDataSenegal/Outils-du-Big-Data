@@ -56,15 +56,27 @@ Pour configurer Kafka, il faut se rendre dans le fichier kafka_2.12-3.2.1/config
     --batch-size=1
     --timeout=0
 ```
-* Pour que Kafka soit atteignable sur les autres réseaux, il faut décomenter et modifier la ligne 34 du fichier fichier kafka_2.12-3.2.1/config/server.properties de chaque broker en y mettant  
+* Pour que Kafka soit atteignable sur les autres réseaux, il faut décommenter et modifier la ligne 34 du fichier kafka_2.12-3.2.1/config/server.properties de chaque broker en y mettant. Cela va permettre à Kafka d'écouté dans tous les interfaces de notre réseau   
 ```
-    listeners=PLAINTEXT://0.0.0.0:9092
+    listeners=PLAINTEXT://localhost:9092
 ```
 * Il faut mettre le parametre delete.topic.enable dans le fichier kafka_2.12-3.2.1/config/server.properties à true pour permettre la suppression des topics par l'outil d'administration. Si ce parametre n'est pas mis à true, une suppression d'un topics n'aura aucun effet sur le topic Pour cela, il faut ajouter la ligne ci-dessous dans le fichier kafka_2.12-3.2.1/config/server.properties.
 ```
     delete.topic.enable=true
 ```
-* 
+* Il faut spécifier le chemain de sortie de logs de kafka en changant la valeur de log.dirs qui se trouvent dans le fichier kafka_2.12-3.2.1/config/server.properties à la ligne 62. Il faut mettre le chemin complet de stockage des logs, par exemple:
+```
+    /mnt/c/Users/jmsawadogo/testKafKaZookeper/kafka_2.12-3.2.1
+```
+* Il faut spécifier aussi le nombre le delais de rétention des données (en heures) avant qu'elles ne soient supprimer par Kafka. La valeur par défaut est de 168 heures soient une semaine. Pour cela il faut modifier la valeur de log.retention.hours qui se trouvent à la ligne 105 du fichier kafka_2.12-3.2.1/config/server.properties. 
+```
+    log.retention.hours=168
+```
+* Si Zookeeper est installé dans une autre machine (c'est le cas notament pour certains noeuds quand on utilise un cluster avec plusieurs noeuds), il faut spécifier l'accès à zookeepeer en modifiant la ligne 125 du fichier kafka_2.12-3.2.1/config/server.properties
+```
+    zookeeper.connect=localhost:2181
+    zookeeper.connection.timeout.ms=6000
+```
 
 ## Ajouter un nouveau noeud à notre cluster
 Pour ajouter un nouveau nœud à notre cluster, il suffit de télécharger la même version de Kafka qui a été téléchargé et de le dézipper dans la machine de destination. Cela se fait avec les commandes ci-dessous dans notre cas :
@@ -75,3 +87,6 @@ Pour ajouter un nouveau nœud à notre cluster, il suffit de télécharger la m�
 Il faut ensuite modifier la configuration du nouveau noeud de 
 
 # Installation de Kafka Manager
+
+
+#### Remarque : (Documentation Kafka)[https://kafka.apache.org/documentation/]
