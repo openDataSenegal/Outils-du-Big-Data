@@ -56,8 +56,15 @@ Pour configurer Kafka, il faut se rendre dans le fichier kafka_2.12-3.2.1/config
     --batch-size=1
     --timeout=0
 ```
+* Pour que Kafka soit atteignable sur les autres réseaux, il faut décomenter et modifier la ligne 34 du fichier fichier kafka_2.12-3.2.1/config/server.properties de chaque broker en y mettant  
+```
+    listeners=PLAINTEXT://0.0.0.0:9092
+```
+* Il faut mettre le parametre delete.topic.enable dans le fichier kafka_2.12-3.2.1/config/server.properties à true pour permettre la suppression des topics par l'outil d'administration. Si ce parametre n'est pas mis à true, une suppression d'un topics n'aura aucun effet sur le topic Pour cela, il faut ajouter la ligne ci-dessous dans le fichier kafka_2.12-3.2.1/config/server.properties.
+```
+    delete.topic.enable=true
+```
 * 
-
 
 ## Ajouter un nouveau noeud à notre cluster
 Pour ajouter un nouveau nœud à notre cluster, il suffit de télécharger la même version de Kafka qui a été téléchargé et de le dézipper dans la machine de destination. Cela se fait avec les commandes ci-dessous dans notre cas :
