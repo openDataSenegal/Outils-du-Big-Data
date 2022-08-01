@@ -77,7 +77,87 @@ Pour configurer Kafka, il faut se rendre dans le fichier kafka_2.12-3.2.1/config
     zookeeper.connect=localhost:2181
     zookeeper.connection.timeout.ms=6000
 ```
+## Configuration HTTPS de Kafka
 
+#### Génération des certificats HTTPS (lien)[https://www.ibm.com/docs/fr/qsip/7.4?topic=options-configuring-apache-kafka-enable-client-authentication]
+La premiere chose à faire pour chiffrer les communications de Kafka est la génération des certificats. Pour se faire, il faut executer la commande ci-dessous dans une ligne de commande:
+```
+    keytool -keystore server.keystore.jks -alias sawadogo_kafka_serveur -validity 365 -genkey -keyalg RSA
+```
+Définir un mot de passe et completer les autres informations. Cette commande va nous générer un fichier server.keystore.jks
+```
+    openssl req -new -x509 -keyout ca-key -out ca-cert -days 365
+```
+Cette commande va générer les fichiers ca-cert   ca-key
+```
+    keytool -keystore kafka.server.truststore.jks -alias CARoot -import -file /mnt/c/Users/jmsawadogo/Desktop/usefulRepo/testKafKaZookeper/kafka_2.12-3.2.1/ca-cert
+```
+Cette commande va générer le fichier kafka.server.truststore.jks
+
+```
+    keytool -keystore kafka.client.truststore.jks -alias CARoot -import -file /mnt/c/Users/jmsawadogo/Desktop/usefulRepo/testKafKaZookeper/kafka_2.12-3.2.1/ca-cert
+```
+Cette commande va générer le fichier kafka.client.truststore.jks
+```
+    keytool -keystore server.keystore.jks -alias sawadogo_kafka_serveur -certreq -file cert-file
+```
+Cette commande va générer le fichier cert-file
+
+```
+openssl x509 -req -CA ca-cert -CAkey ca-key -in cert-file -out cert-signed -days 365 -CAcreateserial
+```
+cette commande va générer le fichier cert-signed
+
+
+```
+    keytool -keystore kafka.server.keystore.jks -alias CARoot -import -file ca-cert
+```
+
+```
+    keytool -keystore kafka.server.keystore.jks -alias server.hostname -import -file cert-signed
+```
+
+```
+    keytool -exportcert -keystore kafka.server.keystore.jks -alias server.hostname -file server.hostname.der
+```
+
+```
+    keytool -keystore kafka.client.keystore.jks -alias client.hostname -validity 365 -genkey
+```
+```
+    keytool -keystore kafka.client.keystore.jks -alias client.hostname -certreq -file client-cert-file
+    openssl x509 -req -CA ca-cert -CAkey ca-key -in client-cert-file -out client-cert-signed -days 365 -CAcreateserial
+```
+```
+keytool -keystore kafka.client.keystore.jks -alias CARoot -import -file ca-cert
+```
+
+```
+keytool -keystore kafka.client.keystore.jks -alias client.hostname -import -file client-cert-signed
+```
+
+#### Installation des clés
+Une fois les certificats créés, pour activer la communication HTTPS avec Kafka, il faut commencer par ajouter la ligne ci-dessous au fichier kafka_2.12-3.2.1/config/server.properties
+```
+    security.inter.broker.protocol = SSL
+```
+En suite, il faut changer le listerners de la ligne 34 en y ajoutant le protocol SSL sur un port different: par exemple, on peut mettre le listeners à :
+```
+    listeners=PLAINTEXT://:9092,SSL://:9093
+```
+Il faut aussi ajouter les lignes ci-dessous au meme fichier kafka_2.12-3.2.1/config/server.properties:
+```
+    ssl.client.auth=required
+    ssl.keystore.location=/somefolder/kafka.server.keystore.jks
+    ssl.keystore.password=test1234
+    ssl.key.password=test1234
+    ssl.truststore.location=/somefolder/kafka.server.truststore.jks
+    ssl.truststore.password=test1234
+```
+
+
+
+to do
 ## Ajouter un nouveau noeud à notre cluster
 Pour ajouter un nouveau nœud à notre cluster, il suffit de télécharger la même version de Kafka qui a été téléchargé et de le dézipper dans la machine de destination. Cela se fait avec les commandes ci-dessous dans notre cas :
 ```
