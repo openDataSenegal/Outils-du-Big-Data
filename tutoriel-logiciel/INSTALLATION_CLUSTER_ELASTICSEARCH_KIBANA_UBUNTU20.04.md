@@ -25,6 +25,12 @@ On peut configurer le nom de notre Cluster en mettant un nom plus parlant pour n
 ```
   cluster.name: nom-de-mon-cluster
 ```
+## Changement de l'adresse IP
+il faut changer l'adresse ip de elasticsearch pour qu'il écoute avec l'adresse ip de notre VM. Pour se faire, il faut ouvrir le fichier elasticsearch.yml qui se trouve dans le repertoire config de elasticsearch et changer l'adresse ip de "network.host" par "l'adresse ip de la machine" et le port "http.port" avec 9200 en le décommentant
+Si lors de la modification de "network.host" par "0.0.0.0", le lancement de ./bin/elasticsearch crash, il faut penser à augmenter le vm.max_map_count de 65 000 à 260 000 avec la commande
+```
+   sysctl -w vm.max_map_count=262144
+```
 # Lancement du cluster Elasticsearch
 Une fois, cela fait, on peut tester si notre elasticsearch fonction correctement en se plaçant en ligne de commande dans le répertoire elasticsearch-8.3.3 et en lançant la commande :
 ```
@@ -163,8 +169,10 @@ Pour les prochains lancements du nœud, il faudra juste exécuter la commande ci
   discovery.seed_hosts: ["127.0.0.1:9300"]
 ```
 en mettant les adresses des masters
-
-
+- Pour lancer le serveur en arriere plan, il faut executer la commande suivante:
+```
+    nohup ./bin/elasticsearch > nohup_logs.out -d
+```
 
 
 
