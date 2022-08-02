@@ -166,16 +166,25 @@ Pour les prochains lancements du nœud, il faudra juste exécuter la commande ci
 ### Remarque : 
 - Si le nœud est installé dans une autre machine, penser à changer les adresses de 
 ```
-  discovery.seed_hosts: ["127.0.0.1:9300"]
+    transport.host:: add_ip_ou_host_du_master
 ```
 en mettant les adresses des masters
 - Pour lancer le serveur en arriere plan, il faut executer la commande suivante:
 ```
     nohup ./bin/elasticsearch > nohup_logs.out -d
 ```
-
-
-
+- Pour lancer elasticsearch, il faut utiliser un utilisateur qui n'est pas admin. Pour créer un utilisateur sous linux, il faut executer la commande ci-dessous:
+```
+    sudo adduser elasticsearchrunner
+```
+Pour donner à cet utilisateur un mot de passe, il faut executer la commande ci-dessous:
+```
+   sudo passwd elasticsearchrunner
+```
+Pour donner à cet utilisateur le droit d'executer le fichier .bin/elasticsearch, il doit avoir les droits necessaires et pour ca, il faut executer la commande ci-dessous:
+```
+    sudo chown -R elasticsearchrunner:elasticsearchrunner /opt/elasticsearch-8.3.3
+```
 
 
 
