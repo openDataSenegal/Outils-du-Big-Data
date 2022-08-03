@@ -83,6 +83,11 @@ Il faut maintenant chiffrer les communications entre Kibana et les navigateurs. 
   server.ssl.key: config/certs/client.key
 ```
 Ou clien.crt et client.key sont les certificats HTTPS destinés à Kibana.
+## Accessibilité de Kibana à l'exterieur
+Pour que Kibana soit accessible à l'exterieur, il faut configurer l'adresse Ip de kibana à 0.0.0.0 ou bien à l'adresse IP de la VM qui heberge kibana. Pour cela, il faut décommenter et changer la valeur de server.host de la ligne 10 à "0.0.0.0":
+```
+    server.host: "0.0.0.0"
+```
 
 ## Configuration des Tokens Et lancement de Kibana
 Une fois les modifications ci-dessus effectuées, il faut maintenant lancer Kibana en executant la commande ci-dessous à partir du repertoire kibana-8.3.3-linux-x86_64 :
