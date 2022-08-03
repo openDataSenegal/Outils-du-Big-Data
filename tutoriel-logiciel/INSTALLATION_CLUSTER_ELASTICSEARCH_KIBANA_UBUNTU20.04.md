@@ -123,7 +123,14 @@ Sur la ligne 170, changer elasticsearch.hosts comme suite :
  ```
       xpack.fleet.outputs: [{id: fleet-default-output, name: default, is_default: true, is_default_monitoring: true, type: elasticsearch, hosts: ['https://localhost:9200', 'url_master2', 'url_master3'], ca_trusted_fingerprint: ac21f15a8db62216e1c92763fcebaa73609ecddbab06d2075e814d15de879668}]
   ```
-Redémarrer en suite Kibana et Elasticsearch.
+Redémarrer en suite Kibana et Elasticsearch. Pour démarer Kibana, il faut executer la commande ci-dessous en se placant dans le repertoire kibana-8.3.3:
+```
+    ./bin/kibana 
+```
+Alors Kibana sera accessible à partir d'une interface web avec le lien suivant:
+```
+    https://adresse_ip_de_la_machine:5601 
+```
 # Ajouter un nouveau Noeud
 
 Pour ajouter un nouveau noeuds Elasticsearch sur une autre machine. Il faut télécharger la meme version des binaires utilisée pour le noeud master elasticsearch. Dans notre cas, on peut le faire sur notre nouvelle machine avec la commande ci-dessous:
