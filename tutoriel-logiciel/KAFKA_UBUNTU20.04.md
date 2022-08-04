@@ -149,26 +149,95 @@ Une fois les certificats créés, pour activer la communication HTTPS avec Kafka
 ```
     security.inter.broker.protocol = SSL
 ```
-En suite, il faut changer le listerners de la ligne 34 en y ajoutant le protocol SSL sur un port different: par exemple, on peut mettre le listeners à :
+En suite, il faut changer le listerner de la ligne 34 en y ajoutant le protocol SSL sur un port different: par exemple, on peut mettre le listeners à :
 ```
     listeners=PLAINTEXT://:9092,SSL://:9093
 ```
 Il faut aussi ajouter les lignes ci-dessous au meme fichier kafka_2.12-3.2.1/config/server.properties:
 ```
+    --batch-size=1
+    --timeout=0
+    delete.topic.enable=true
+    security.inter.broker.protocol=SSL
     ssl.client.auth=required
-    ssl.keystore.location=/mnt/c/Users/jmsawadogo/Desktop/usefulRepo/testKafKaZookeper/kafka_2.12-3.2.1/kafka.server.keystore.jks
+    ssl.keystore.location=/mnt/c/Users/jmsawadogo/Desktop/usefulRepo/kafka_2.12-3.2.1/kafka.server.keystore.jks
     ssl.keystore.password=sawadogo1234
     ssl.key.password=sawadogo1234
-    ssl.truststore.location=/mnt/c/Users/jmsawadogo/Desktop/usefulRepo/testKafKaZookeper/kafka_2.12-3.2.1/kafka.server.truststore.jks
+    ssl.truststore.location=/mnt/c/Users/jmsawadogo/Desktop/usefulRepo/kafka_2.12-3.2.1/kafka.server.truststore.jks
     ssl.truststore.password=sawadogo1234
-    ssl.enabled.protocols=TLSv1.2
-    ssl.truststore.type=JKS
-    ssl.keystore.type=JKS
-```
-Il faut ensuite changer la taille maximale 
+    ssl.endpoint.identification.algorithm=
+    enable.ssl.certificate.verification=false
+    max.poll.records=500
+    max.poll.interval.ms=300000
 
+    ssl.enabled.protocols=TLSv1.2,TLSv1.1,TLSv1
+    #ssl.endpoint.identification.algorithm=HTTPS
+    ssl.keymanager.algorithm=SunX509
+    ssl.keystore.type=JKS
+    ssl.protocol=TLS
+    ssl.trustmanager.algorithm=PKIX
+    ssl.truststore.type=JKS
+    authorizer.class.name=kafka.security.authorizer.AclAuthorizer
+    #kafka.security.auth.SimpleAclAuthorizer
+    allow.everyone.if.no.acl.found=true
+    advertised.listeners=PLAINTEXT://:9092,SSL://:9093
+```
+## Tester si le https fonctionne
+Pour tester si la securisation des communications SSL de Kafka fonctionne, il faut executer la commande ci-dessous:
+```
+    sudo openssl s_client -debug -connect kafka01.mycompany.com:9093 -tls1
+```
+Si la sécurisation HTTPS fonctionne, nous aurons une sortie qui ressemblera à quelques choses de ce genre:
+```
+    CONNECTED(00000003)
+write to 0x562e08958ee0 [0x562e0896bcd0] (138 bytes => 138 (0x8A))
+0000 - 16 03 01 00 85 01 00 00-81 03 01 75 f4 01 c6 dd   ...........u....
+0010 - b5 b9 cc f8 88 3a 7e 23-0d 74 18 14 2e f1 3b 86   .....:~#.t....;.
+0020 - 9b 4b f8 27 38 19 ae 91-8f 44 5c 00 00 12 c0 0a   .K.'8....D\.....
+0030 - c0 14 c0 09 c0 13 00 35-00 2f 00 39 00 33 00 ff   .......5./.9.3..
+0040 - 01 00 00 46 00 00 00 1e-00 1c 00 00 19 73 72 76   ...F.........srv
+0050 - 2d 61 70 70 33 36 35 2e-74 69 73 73 65 6f 2d 65   -app365.tisseo-e
+0060 - 78 70 2e 64 6f 6d 00 0b-00 04 03 00 01 02 00 0a   xp.dom..........
+0070 - 00 0c 00 0a 00 1d 00 17-00 1e 00 19 00 18 00 23   ...............#
+0080 - 00 00 00 16 00 00 00 17-00 00                     ..........
+read from 0x562e08958ee0 [0x562e08962ab3] (5 bytes => 5 (0x5))
+0000 - 15 03 03 00 02                                    .....
+read from 0x562e08958ee0 [0x562e08962ab8] (2 bytes => 2 (0x2))
+0000 - 02 46                                             .F
+140175171114816:error:1409442E:SSL routines:ssl3_read_bytes:tlsv1 alert protocol version:ssl/record/rec_layer_s3.c:1544:SSL alert number 70
+---
+no peer certificate available
+---
+No client certificate CA names sent
+---
+SSL handshake has read 7 bytes and written 138 bytes
+Verification: OK
+---
+New, (NONE), Cipher is (NONE)
+Secure Renegotiation IS NOT supported
+Compression: NONE
+Expansion: NONE
+No ALPN negotiated
+SSL-Session:
+    Protocol  : TLSv1
+    Cipher    : 0000
+    Session-ID:
+    Session-ID-ctx:
+    Master-Key:
+    PSK identity: None
+    PSK identity hint: None
+    SRP username: None
+    Start Time: 1659601713
+    Timeout   : 7200 (sec)
+    Verify return code: 0 (ok)
+    Extended master secret: no
+---
+read from 0x562e08958ee0 [0x562e0889cda0] (8192 bytes => 0 (0x0))
+```
+## Création de certificat pour un client
 
 to do
+
 ## Ajouter un nouveau noeud à notre cluster
 Pour ajouter un nouveau nœud à notre cluster, il suffit de télécharger la même version de Kafka qui a été téléchargé et de le dézipper dans la machine de destination. Cela se fait avec les commandes ci-dessous dans notre cas :
 ```
@@ -179,6 +248,12 @@ Il faut ensuite modifier la configuration du nouveau nœud de socket.request.max
 ```
     socket.request.max.bytes=369296128
 ```
+Il faut ensuite ajouter les deux valeurs ci-dessous à la configuration:
+```
+    max.poll.records=500
+    max.poll.interval.ms=300000
+```
+
 # Installation de Kafka Manager
 
 
