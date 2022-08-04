@@ -165,7 +165,7 @@ Il faut aussi ajouter les lignes ci-dessous au meme fichier kafka_2.12-3.2.1/con
     ssl.truststore.type=JKS
     ssl.keystore.type=JKS
 ```
-
+Il faut ensuite changer la taille maximale 
 
 
 to do
@@ -175,8 +175,10 @@ Pour ajouter un nouveau nœud à notre cluster, il suffit de télécharger la m�
     wget https://dlcdn.apache.org/kafka/3.2.1/kafka_2.12-3.2.1.tgz
     tar xzf kafka_2.12-3.2.1.tgz
 ```
-Il faut ensuite modifier la configuration du nouveau noeud de 
-
+Il faut ensuite modifier la configuration du nouveau nœud de socket.request.max.bytes en le faisant passer à 369296128. Pour cela décommenter et modifier la valeur de socket.request.max.bytes comme ici:
+```
+    socket.request.max.bytes=369296128
+```
 # Installation de Kafka Manager
 
 
