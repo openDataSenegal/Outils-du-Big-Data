@@ -235,7 +235,7 @@ SSL-Session:
 ---
 read from 0x562e08958ee0 [0x562e0889cda0] (8192 bytes => 0 (0x0))
 ```
-## Les nouveaux commandes
+## Les nouvelles commandes
 Une fois le HTTPS et SSL installé, les anciennes commandes ne fonctionneront plus comme précédement. Il faut créer un fichier nommé client-ssl.properties et y mettre les informations suivantes:
 ```
     security.protocol=SSL
