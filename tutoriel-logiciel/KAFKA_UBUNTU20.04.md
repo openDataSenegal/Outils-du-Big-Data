@@ -345,7 +345,13 @@ Il faut ensuite remplir ce fichier avec les informations ci-dessous:
 Il faut ensuite executer les commandes ci-dessous:
 ```
     systemctl daemon-reload
+``` 
+```
     sudo systemctl start zookeeper
+```
+```
     sudo systemctl start kafka
+```
+```
     sudo systemctl status kafka
 ```
