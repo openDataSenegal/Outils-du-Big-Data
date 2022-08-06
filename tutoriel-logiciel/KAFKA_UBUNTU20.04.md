@@ -100,7 +100,7 @@ La premiere chose à faire pour mettre en place le HTTPS sous Kafka est de modif
 * Il faut comment par modifier le port d'écoute et de le mettre au port 9093 et changer le PLAINTEXT par SSL, pour ce faire, il faut modifier la valeur du listeners comme suite
 ```
     listeners=SSL://0.0.0.0:9093
-    advertised.listeners=SSL://0.0.0.0:9093
+    advertised.listeners=SSL://:9093
 ```
 
 #### Génération des certificats HTTPS [lien](https://www.ibm.com/docs/fr/qsip/7.4?topic=options-configuring-apache-kafka-enable-client-authentication)
@@ -298,3 +298,54 @@ Il faut ensuite ajouter les deux valeurs ci-dessous à la configuration:
 
 
 #### Remarque : [Documentation Kafka](https://kafka.apache.org/documentation/)
+
+#### Création et Activation du systemd
+Pour activé le systemd, il faut créer des fichiers unitaires systemd pour les services Zookeeper et Kafka. Ce qui vous aidera à démarrer/arrêter le service Kafka de manière simple.
+Il faut créer le fichier zookeeper.service dans system avec la commande ci-dessous:
+```
+    sudo nano /etc/systemd/system/zookeeper.service
+```
+Il faut ensuite remplir ce fichier avec les informations ci-dessous:
+```
+    [Unité]
+    Description=Serveur Apache Zookeeper
+    Documentation=http://zookeeper.apache.org
+    Requiert=network.target remote-fs.target
+    After=network.target remote-fs.target
+
+    [Service]
+    Genre=simple
+    ExecStart=/usr/local/kafka/bin/zookeeper-server-start.sh /usr/local/kafka/config/zookeeper.properties
+    ExecStop=/usr/local/kafka/bin/zookeeper-server-stop.sh
+    Redémarrer=sur-anormal
+
+    [Installer]
+    WantedBy=multi-utilisateur.cible
+```
+Il faut ensuite, créer le fichier kafka.service avec la commande ci-dessous:
+```
+    sudo nano /etc/systemd/system/kafka.service
+```
+Il faut ensuite remplir ce fichier avec les informations ci-dessous:
+```
+    [Unit]
+    Description=Apache Kafka Server
+    Documentation=http://kafka.apache.org/documentation.html
+    Requires=zookeeper.service
+
+    [Service]
+    Type=simple
+    Environment="JAVA_HOME=/usr/lib/jvm/java-1.11.0-openjdk-amd64"
+    ExecStart=/usr/local/kafka/bin/kafka-server-start.sh /usr/local/kafka/config/server.properties
+    ExecStop=/usr/local/kafka/bin/kafka-server-stop.sh
+
+    [Install]
+    WantedBy=multi-user.target
+```
+Il faut ensuite executer les commandes ci-dessous:
+```
+    systemctl daemon-reload
+    sudo systemctl start zookeeper
+    sudo systemctl start kafka
+    sudo systemctl status kafka
+```
