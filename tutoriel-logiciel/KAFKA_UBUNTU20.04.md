@@ -257,8 +257,26 @@ les nouvelles commandes s'executerons comme les exemples ci-dessous:
 ```
 
 ## Création de certificat pour un client
+Il faut commencer par chercher l'alias
+```
+    keytool -list -v -keystore /opt/kafka/certs/kafka.client.keystore.jks
+```
+Pour générer le certificate.pem
+```
+sudo keytool -exportcert -alias srv-app365.tisseo-exp.dom -keystore /opt/kafka/certs/kafka.client.keystore.jks -file /opt/kafka/certs/certificate.pem -storepass sawadogo1900
+```
 
-to do
+Pour générer la clé
+```
+sudo keytool -v -importkeystore -srckeystore /opt/kafka/certs/kafka.client.keystore.jks -srcalias srv-app365.tisseo-exp.dom -destkeystore /opt/kafka/certs/cert_and_key.p12 -deststoretype PKCS12 -storepass sawadogo1900 -srcstorepass sawadogo1900
+sudo openssl pkcs12 -in /opt/kafka/certs/cert_and_key.p12 -nodes -nocerts -out /opt/kafka/certs/key.pem -passin pass:sawadogo1900
+```
+
+Pour générer le caroot
+```
+sudo keytool -exportcert -alias srv-app365.tisseo-exp.dom -keystore /opt/kafka/certs/kafka.client.keystore.jks -rfc 
+-file /opt/kafka/certs/CARoot.pem -storepass sawadogo1900
+```
 
 ## Ajouter un nouveau noeud à notre cluster
 Pour ajouter un nouveau nœud à notre cluster, il suffit de télécharger la même version de Kafka qui a été téléchargé et de le dézipper dans la machine de destination. Cela se fait avec les commandes ci-dessous dans notre cas :
