@@ -6,7 +6,11 @@ Dans ce tutoriel, on expliquera l'installation de la version 3.2.1 de Kafka qui 
 La première chose à faire et la mise à jour de notre système d'exploitation Ubuntu et l'installation ou la mise à jour de Java si cela n'est pas déjà fait sur notre système d'exploitation. Pour cela, il faut executer les commandes ci-dessous:
 ```
   sudo apt update 
+```
+```
   sudo apt install default-jdk
+```
+```
   java --version 
 ```
 Il faut installer la version 11 du JDK de Java
@@ -24,6 +28,8 @@ Il faut ensuite décomprésser les binaires avec la commande ci-dessous:
 Se rendre en ligne de commande dans le dossier kafka_2.12-3.2.1 et crééer le dossier qui contiendront les données zookeepeer et les logs kafkas. 
 ```
     mkdir jms-zookeeper-data
+```
+```
     mkdir jms-sorties-logs
 ```
 ## Lancement de Zookeeper
@@ -125,6 +131,8 @@ Il faut ensuite créez le fichier de clés certifiées du client et importez le 
 Il faut ensuite générez un certificat serveur et signez-le à l'aide de l'autorité de certification. Cela se fait avec les commandes ci-dessous qui vont générer les fichiers cert-file et cert-signed :
 ```
     keytool -keystore server.keystore.jks -alias sawadogo_kafka_serveur -certreq -file cert-file
+```
+```
     openssl x509 -req -CA ca-cert -CAkey ca-key -in cert-file -out cert-signed -days 365 -CAcreateserial
 ```
 Il faut ensuite, importez le certificat de l'autorité de certification dans le magasin de clés du serveur avec la commande ci-dessous:
@@ -146,15 +154,17 @@ Il faut ensuite générez un magasin de clés client.
 Il faut ensuite générez un certificat client et signez-le à l'aide de l'autorité de certification.
 ```
     keytool -keystore kafka.client.keystore.jks -alias client.hostname -certreq -file client-cert-file
+```
+```
     openssl x509 -req -CA ca-cert -CAkey ca-key -in client-cert-file -out client-cert-signed -days 365 -CAcreateserial
 ```
 Il faut importez le certificat de l'autorité de certification dans le magasin de clés du client
 ```
-keytool -keystore kafka.client.keystore.jks -alias CARoot -import -file ca-cert
+    keytool -keystore kafka.client.keystore.jks -alias CARoot -import -file ca-cert
 ```
 Il faut importez le certificat client signé dans le magasin de clés du client.
 ```
-keytool -keystore kafka.client.keystore.jks -alias client.hostname -import -file client-cert-signed
+    keytool -keystore kafka.client.keystore.jks -alias client.hostname -import -file client-cert-signed
 ```
 #### Installation des clés
 Il faut aussi ajouter les lignes ci-dessous au meme fichier kafka_2.12-3.2.1/config/server.properties:
@@ -252,7 +262,11 @@ Une fois le HTTPS et SSL installé, les anciennes commandes ne fonctionneront pl
 les nouvelles commandes s'executerons comme les exemples ci-dessous:
 ```
     sudo ./bin/kafka-console-consumer.sh --bootstrap-server srv-app365.tisseo-exp.dom:9093 --topic sawadogotestkafka --from-beginning --consumer.config ./client-ssl.properties
+```
+```
     sudo ./bin/kafka-console-producer.sh --broker-list srv-app365.tisseo-exp.dom:9093 --topic sawadogotestkafka --producer.config ./client-ssl.properties
+```
+```
     sudo ./bin/kafka-consumer-groups.sh --list --bootstrap-server srv-app365.tisseo-exp.dom:9093 --command-config ./client-ssl.properties
 ```
 
@@ -284,6 +298,8 @@ sudo keytool -exportcert -alias srv-app365.tisseo-exp.dom -keystore /opt/kafka/c
 Pour ajouter un nouveau nœud à notre cluster, il suffit de télécharger la même version de Kafka qui a été téléchargé et de le dézipper dans la machine de destination. Cela se fait avec les commandes ci-dessous dans notre cas :
 ```
     wget https://dlcdn.apache.org/kafka/3.2.1/kafka_2.12-3.2.1.tgz
+```
+```
     tar xzf kafka_2.12-3.2.1.tgz
 ```
 Il faut ensuite modifier la configuration du nouveau nœud de socket.request.max.bytes en le faisant passer à 369296128. Pour cela décommenter et modifier la valeur de socket.request.max.bytes comme ici:
