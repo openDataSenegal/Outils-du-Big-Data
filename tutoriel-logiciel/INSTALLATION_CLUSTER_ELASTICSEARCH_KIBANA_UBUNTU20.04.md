@@ -174,6 +174,11 @@ Pour les prochains lancements du nœud, il faudra juste exécuter la commande ci
 ```
   ./bin/elasticsearch
 ```
+# création et Activation du systemd pour elasticsearch
+to do
+
+# création et Activation du systemd pour Kibana
+to do
 
 ### Remarque : 
 - Si le nœud est installé dans une autre machine, penser à changer les adresses de 
