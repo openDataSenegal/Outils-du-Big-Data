@@ -277,22 +277,57 @@ Il faut commencer par chercher l'alias
 ```
 Pour générer le certificate.pem
 ```
-sudo keytool -exportcert -alias srv-app365.tisseo-exp.dom -keystore /opt/kafka/certs/kafka.client.keystore.jks -rfc -file /opt/kafka/certs/certificate.pem -storepass sawadogo1900
+sudo keytool -exportcert -alias alias_certificat -keystore /opt/kafka/certs/kafka.client.keystore.jks -rfc -file /opt/kafka/certs/certificate.pem -storepass sawadogo123456
 ```
 
 Pour générer la clé
 ```
-sudo keytool -v -importkeystore -srckeystore /opt/kafka/certs/kafka.client.keystore.jks -srcalias srv-app365.tisseo-exp.dom -destkeystore /opt/kafka/certs/cert_and_key.p12 -deststoretype PKCS12 -storepass sawadogo1900 -srcstorepass sawadogo1900
+    sudo keytool -v -importkeystore -srckeystore /opt/kafka/certs/kafka.client.keystore.jks -srcalias srv-app365.tisseo-exp.dom -destkeystore /opt/kafka/certs/cert_and_key.p12 -deststoretype PKCS12 -storepass sawadogo123456 -srcstorepass sawadogo123456
 ```
 ```
-sudo openssl pkcs12 -in /opt/kafka/certs/cert_and_key.p12 -nodes -nocerts -out /opt/kafka/certs/key.pem -passin pass:sawadogo1900
+    sudo openssl pkcs12 -in /opt/kafka/certs/cert_and_key.p12 -nodes -nocerts -out /opt/kafka/certs/key.pem -passin pass:sawadogo123456
 ```
 
 Pour générer le caroot
 ```
-sudo keytool -exportcert -alias caroot -keystore /opt/kafka/certs/kafka.client.keystore.jks -rfc 
--file /opt/kafka/certs/CARoot.pem -storepass sawadogo1900
+    sudo keytool -exportcert -alias alias_caroot -keystore /opt/kafka/certs/kafka.client.keystore.jks -rfc 
+-file /opt/kafka/certs/CARoot.pem -storepass sawadogo123456
 ```
+Vous pouvez tester ensuite si le certificat généré fonctionne très bien en pyhton. Pour se faire créer un topic nommé sawadogotestkafka et utiliser par exemple le code ci-dessous:
+```
+    from kafka import KafkaProducer
+
+    producer = KafkaProducer(
+        bootstrap_servers="url_broker_kafka:9093",
+        security_protocol='SSL',
+        ssl_check_hostname=False,
+        ssl_cafile="C:/Users/jmsawadogo/Desktop/tesseoProject/CARoot.pem",
+        ssl_certfile="C:/Users/jmsawadogo/Desktop/tesseoProject/certificate.pem",
+        ssl_keyfile="C:/Users/jmsawadogo/Desktop/tesseoProject/key.pem"
+    )
+    
+    import json
+    station = {"tester": "tester le fonction de l'authentification depuis python"}
+    producer.send("sawadogotestkafka", json.dumps(station).encode())
+```
+Pour lire le topic maintenant, il faut executer les commandes ci-dessous: 
+```
+    from kafka import KafkaConsumer, KafkaProducer
+
+    consumer = KafkaConsumer("sawadogotestkafka",
+                             bootstrap_servers=f"url_broker_kafka:9093",
+                             group_id = "sawadogo",
+                             security_protocol='SSL',
+                             ssl_check_hostname=False,
+                             ssl_cafile="C:/Users/jmsawadogo/Desktop/tesseoProject/CARoot.pem",
+                             ssl_certfile="C:/Users/jmsawadogo/Desktop/tesseoProject/certificate.pem",
+                             ssl_keyfile="C:/Users/jmsawadogo/Desktop/tesseoProject/key.pem")
+                             
+   for message in consumer:
+        print(message)
+```
+
+#### Remarque : [Documentation Technique]([https://kafka.apache.org/documentation/](http://maximilianchrist.com/python/databases/2016/08/13/connect-to-apache-kafka-from-python-using-ssl.html))
 
 ## Ajouter un nouveau noeud à notre cluster
 Pour ajouter un nouveau nœud à notre cluster, il suffit de télécharger la même version de Kafka qui a été téléchargé et de le dézipper dans la machine de destination. Cela se fait avec les commandes ci-dessous dans notre cas :
@@ -313,11 +348,22 @@ Il faut ensuite ajouter les deux valeurs ci-dessous à la configuration:
 ```
 
 # Installation de Kafka Manager
-
+Pour administrer notre cluster Kafka, on peut utiliser [Kafka-Manager](https://github.com/yahoo/CMAK) qui nous donne une apercu de l'état de notre cluster. Pour installer [Kafka-Manager](https://github.com/yahoo/CMAK), il faut commencer par télécharger les binaires de l'application en clonant le repository github comme ci-dessous
+```
+    sudo git clone https://github.com/yahoo/kafka-manager.git
+```
+En suite il faut se rendre dans le dossier cloner avec 
+```
+    cd kafka-manager/
+```
+et executer la commande ci-dessous :
+```
+    sudo ./sbt clean dist
+```
 
 #### Remarque : [Documentation Kafka](https://kafka.apache.org/documentation/)
 
-# Création et Activation du systemd pour Kafka
+# Création et Activation du systemd pour Kafka 
 Pour activé le systemd, il faut créer des fichiers unitaires systemd pour les services Zookeeper et Kafka. Ce qui vous aidera à démarrer/arrêter le service Kafka de manière simple.
 Il faut créer le fichier zookeeper.service dans system avec la commande ci-dessous:
 ```
