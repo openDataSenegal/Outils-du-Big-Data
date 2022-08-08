@@ -290,7 +290,7 @@ sudo openssl pkcs12 -in /opt/kafka/certs/cert_and_key.p12 -nodes -nocerts -out /
 
 Pour générer le caroot
 ```
-sudo keytool -exportcert -alias srv-app365.tisseo-exp.dom -keystore /opt/kafka/certs/kafka.client.keystore.jks -rfc 
+sudo keytool -exportcert -alias caroot -keystore /opt/kafka/certs/kafka.client.keystore.jks -rfc 
 -file /opt/kafka/certs/CARoot.pem -storepass sawadogo1900
 ```
 
