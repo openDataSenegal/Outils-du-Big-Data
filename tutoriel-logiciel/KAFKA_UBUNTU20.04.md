@@ -299,7 +299,7 @@ Il faut ensuite ajouter les deux valeurs ci-dessous à la configuration:
 
 #### Remarque : [Documentation Kafka](https://kafka.apache.org/documentation/)
 
-#### Création et Activation du systemd
+# Création et Activation du systemd pour Kafka
 Pour activé le systemd, il faut créer des fichiers unitaires systemd pour les services Zookeeper et Kafka. Ce qui vous aidera à démarrer/arrêter le service Kafka de manière simple.
 Il faut créer le fichier zookeeper.service dans system avec la commande ci-dessous:
 ```
@@ -355,3 +355,8 @@ Il faut ensuite executer les commandes ci-dessous:
 ```
     sudo systemctl status kafka
 ```
+# création et Activation du systemd pour elasticsearch
+to do
+
+# création et Activation du systemd pour Kibana
+to do
