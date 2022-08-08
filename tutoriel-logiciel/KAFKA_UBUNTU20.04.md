@@ -263,12 +263,14 @@ Il faut commencer par chercher l'alias
 ```
 Pour générer le certificate.pem
 ```
-sudo keytool -exportcert -alias srv-app365.tisseo-exp.dom -keystore /opt/kafka/certs/kafka.client.keystore.jks -file /opt/kafka/certs/certificate.pem -storepass sawadogo1900
+sudo keytool -exportcert -alias srv-app365.tisseo-exp.dom -keystore /opt/kafka/certs/kafka.client.keystore.jks -rfc -file /opt/kafka/certs/certificate.pem -storepass sawadogo1900
 ```
 
 Pour générer la clé
 ```
 sudo keytool -v -importkeystore -srckeystore /opt/kafka/certs/kafka.client.keystore.jks -srcalias srv-app365.tisseo-exp.dom -destkeystore /opt/kafka/certs/cert_and_key.p12 -deststoretype PKCS12 -storepass sawadogo1900 -srcstorepass sawadogo1900
+```
+```
 sudo openssl pkcs12 -in /opt/kafka/certs/cert_and_key.p12 -nodes -nocerts -out /opt/kafka/certs/key.pem -passin pass:sawadogo1900
 ```
 
