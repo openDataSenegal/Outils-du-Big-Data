@@ -16,17 +16,17 @@ Il faut ensuite décompresser les binaires avec les commandes suivantes :
 ```
 # Configuration Elasticsearch
 ## Configuration HTTPS Elasticseach
-la version de elasticsearch utilisée ici, autogenère automatiquement des certificats https qu'on peut trouver dans le repertoire elasticsearch-8.3.3/config/certs.
+La version d'Elasticsearch utilisée ici, auto générée automatiquement des certificats HTTPS qu'on peut trouver dans le repertoire elasticsearch-8.3.3/config/certs.
 Donc, aucune configuration HTPPS n'est nécessaire à moins de vouloir configurer soit même de nouveaux certificat HTTPS.
 ## Configuration du TAS du JVM Elasticsearch
-Il faut configurer le TAS du JVM à 4giga. Pour cela, il faut se rendre dans le fichier elasticsearch-8.3.3/config/jvm.options et décommenter les lignes 32 et 33 (-Xms4g et -Xmx4g)
+Il faut configurer le TAS du JVM à 4giga. Pour cela, il faut se rendre dans le fichier elasticsearch-8.3.3/config/jvm.options et décommenter les lignes 32 et 33 (-Xms4g et -Xmx4g).
 ## configuration du nom du cluster
-On peut configurer le nom de notre Cluster en mettant un nom plus parlant pour notre projet. Pour cela, se rendre dans le fichier elasticsearch-8.3.3/config/elasticsearch.yml et décommanter la ligne 17 et changer le nom du claster. 
+On peut configurer le nom de notre Cluster en mettant un nom plus parlant pour notre projet. Pour cela, se rendre dans le fichier elasticsearch-8.3.3/config/elasticsearch.yml et décommenter la ligne 17 et changer le nom du cluster. 
 ```
   cluster.name: nom-de-mon-cluster
 ```
 ## Changement de l'adresse IP
-il faut changer l'adresse ip de elasticsearch pour qu'il écoute avec l'adresse ip de notre VM. Pour se faire, il faut ouvrir le fichier elasticsearch.yml qui se trouve dans le repertoire config de elasticsearch et changer l'adresse ip de "network.host" par "l'adresse ip de la machine" et le port "http.port" avec 9200 en le décommentant
+Il faut changer l'adresse ip d'elasticsearch pour qu'il écoute avec l'adresse ip de notre VM. Pour se faire, il faut ouvrir le fichier elasticsearch.yml qui se trouve dans le répertoire config de elasticsearch et changer l'adresse ip de "network.host" par "l'adresse ip de la machine" et le port "http.port" avec 9200 en le décommentant
 Si lors de la modification de "network.host" par "0.0.0.0", le lancement de ./bin/elasticsearch crash, il faut penser à augmenter le vm.max_map_count de 65 000 à 260 000 avec la commande
 ```
    sysctl -w vm.max_map_count=262144
@@ -64,19 +64,19 @@ Le mot de passe et le username ont été configuré automatiquement par elastics
 ```
 # Configuration Kibana
 ## Création des certificats HTTPS destinés à Kibana
-La prémière choses à faire pour la configuration de Kibana est la génération des certificats HTTPS. Pour se faire, il faut se rendre au repertoire de Elasticsearch et executer effectuer les operations Suivantes:
-* Mot de passe du conteneur http.p12 : executer la commande ci-dessous pour obtenir le mot de passe de http.
+La première chose à faire pour la configuration de Kibana est la génération des certificats HTTPS. Pour ce faire, il faut se rendre au répertoire d'Elasticsearch et executer les opérations Suivantes:
+* Mot de passe du conteneur http.p12 : exécuter la commande ci-dessous pour obtenir le mot de passe de http.
  ```
     ./bin/elasticsearch-keystore show xpack.security.http.ssl.keystore.secure_password
  ```
-* Génération des certificats destinés à Kibana : Utiliser le mot de passe généré précédement pour obtenir les certificats en executant les commandes ci-dessous:
+* Génération des certificats destinés à Kibana : utiliser le mot de passe généré précédemment pour obtenir les certificats en exécutant les commandes ci-dessous :
  ```
     openssl pkcs12 -in /chemin_complet/elasticsearch-8.3.3/config/certs/http.p12 -out client.crt -clcerts -nokeys
     openssl pkcs12 -in /chemin_complet/elasticsearch-8.3.3/config/certs/http.p12 -out client.key -nocerts -nodes
  ```
-Utilisé le mot de passe généré précédement quand on vous demandera de fournir le mot de passe.
+Utiliser le mot de passe généré précédemment quand on vous demandera de fournir le mot de passe.
 ## Configuration de la connexion HTTPS entre les navigateurs et Kibana
-Il faut maintenant chiffrer les communications entre Kibana et les navigateurs. Pour chiffrer les communications entre Kibana et les navigateurs, il faut activer le chiffrage HTTPS; Pour ce faire, il faut créer le répertoire kibana-8.3.3-linux-x86_64/config/certs/ et copier les certificats HTTPS générés précedents (client.crt, client.key) qui sont destinés à Kibana. Il faut ensuite modifier dans le fichier kibana-8.3.3-linux-x86_64/config/kibana.yml les lignes 37, 38, 39 pour le transformer ainsi:
+Il faut maintenant chiffrer les communications entre Kibana et les navigateurs. Pour chiffrer les communications entre Kibana et les navigateurs, il faut activer le chiffrage HTTPS; Pour ce faire, il faut créer le répertoire kibana-8.3.3-linux-x86_64/config/certs/ et copier les certificats HTTPS générés précédents (client.crt, client.key) qui sont destinés à Kibana. Il faut ensuite modifier dans le fichier kibana-8.3.3-linux-x86_64/config/kibana.yml les lignes 37, 38, 39 pour le transformer ainsi:
 ```
   server.ssl.enabled: true
   server.ssl.certificate: config/certs/client.crt 
@@ -90,21 +90,19 @@ Pour que Kibana soit accessible à l'exterieur, il faut configurer l'adresse Ip 
 ```
 
 ## Configuration des Tokens Et lancement de Kibana
-Une fois les modifications ci-dessus effectuées, il faut maintenant lancer Kibana en executant la commande ci-dessous à partir du repertoire kibana-8.3.3-linux-x86_64 :
+Une fois les modifications ci-dessus effectuées, il faut maintenant lancer Kibana en exécutant la commande ci-dessous à partir du repertoire kibana-8.3.3-linux-x86_64 :
 ```
   ./bin/kibana
 ```
 Cette commande prendra quelques minutes pour se lancer complètement.
-
 Une fois l'exécution de cette commande terminée, il faut ouvrir dans un navigateur l'URL suivant [https://localhost:5601](https://localhost:5601/?code=723807). Alors, il nous demandera de fournir un Token.
 Il faut repartir dans le répertoire d'Elasticsearch et lancer la commande :
 ```
   ./bin/elasticsearch-create-enrollment-token -s kibana
 ```
-Cela va générer un Token en ligne de commande qu'il faudra copié et le mettre dans l'interface Kibana.
-Ensuite Il faut cliquer sur le bouton "Configure Elastic".
+Cela va générer un Token en ligne de commande qu'il faudra copier et le mettre dans l'interface Kibana.
+Ensuite, il faut cliquer sur le bouton "Configure Elastic".
 Après quelques secondes, Kibana va nous rediriger vers la page d'authentification. On pourra s'authentifier avec les identifiants elastcisearch
-
 
 ## Configuration de la connexion HTTPS Entre Kibana et Elasticsearch
 Pour chiffrer les communications entre Kibana et Elasticsearch, il faut :
@@ -113,7 +111,7 @@ Pour chiffrer les communications entre Kibana et Elasticsearch, il faut :
   xpack.security.http.ssl.client_authentication: required
 ```
 Cette Ligne est à ajouter dans le fichier de configuration elasticsearch-8.3.3/config/elasticsearch.yml de elasticsearch.
-Normallement avec cette version de Kibana et de elasticsearch. Le chiffrage des communications entre Kibana et elasticsearch est activé par défaut.
+Normalement avec cette version de Kibana et de elasticsearch. Le chiffrage des communications entre Kibana et elasticsearch est activé par défaut.
 Donc, ajouter cette ligne sur la fiche de configuration d'Elasticsearch sera suffisant.
 
 
@@ -123,20 +121,20 @@ Sur la ligne 170, changer elasticsearch.hosts comme suite :
   ```
       elasticsearch.hosts: ['https://localhost:9200', 'url_master2', 'url_master3']
   ```
- ou les URLS à l'intérieur des [] sont les URLs de la liste des serveurs masters du cluster Elastcisearch
- Changer aussi l'adresse les adresses IP qui se trouvent dans la ligne 173 xpack.fleet.outputs par :
+ Ou les URLS à l'intérieur des [] sont les URLs de la liste des serveurs masters du cluster Elastcisearch
+Changer aussi l'adresse les adresses IP qui se trouvent dans la ligne 173 xpack.fleet.outputs par :
  ```
       xpack.fleet.outputs: [{id: fleet-default-output, name: default, is_default: true, is_default_monitoring: true, type: elasticsearch, hosts: ['https://localhost:9200', 'url_master2', 'url_master3'], ca_trusted_fingerprint: ac21f15a8db62216e1c92763fcebaa73609ecddbab06d2075e814d15de879668}]
   ```
-Redémarrer en suite Kibana et Elasticsearch. Pour démarer Kibana, il faut executer la commande ci-dessous en se placant dans le repertoire kibana-8.3.3:
+Redémarrer en suite Kibana et Elasticsearch. Pour démarrer Kibana, il faut exécuter la commande ci-dessous en se plaçant dans le répertoire kibana-8.3.3:
 ```
     ./bin/kibana 
 ```
-Alors Kibana sera accessible à partir d'une interface web avec le lien suivant:
+Alors Kibana sera accessible à partir d'une interface web avec le lien suivant :
 ```
     https://adresse_ip_de_la_machine:5601 
 ```
-# Ajouter un nouveau Noeud
+# Ajouter un nouveau Nœud
 
 Pour ajouter un nouveau noeuds Elasticsearch sur une autre machine. Il faut télécharger la meme version des binaires utilisée pour le noeud master elasticsearch. Dans notre cas, on peut le faire sur notre nouvelle machine avec la commande ci-dessous:
 ```
@@ -146,8 +144,8 @@ Il faut ensuite décompresser les binaires avec les commandes suivantes :
 ```
   tar zxvf elasticsearch-8.3.3-linux-x86_64.tar.gz
 ```
-## Configuration du noeud Elasticsearch
-### Configuration HTTPS du noeud Elasticseach
+## Configuration du nœud Elasticsearch
+### Configuration HTTPS du nœud Elasticseach
 la version de elasticsearch utilisée ici, autogenère automatiquement des certificats https qu'on peut trouver dans le repertoire elasticsearch-8.3.3/config/certs.
 Donc, aucune configuration HTPPS n'est nécessaire à moins de vouloir configurer soit même de nouveaux certificat HTTPS.
 ### Configuration du TAS du JVM Elasticsearch
@@ -157,13 +155,13 @@ Il faut configurer le nom de notre Cluster en mettant le même nom identique que
 ```
   cluster.name: nom-de-mon-cluster
 ```
-### Création d'un token d'inscription pour ce noeud
+### Création d'un token d'inscription pour ce nœud
 Pour ajouter un nouveau à notre cluster, il nous faudra créer un token pour ce nœud. Pour cela, il faut se rendre dans le répertoire du nœud master ou de n'importe quel nœud du cluster et exécuter la commande ci-dessous :
 ```
   ./bin/elasticsearch-create-enrollment-token -s node
 ```
 Cette commande va générer un token.
-Il faut ensuite se rendre dans le répertoire du nœud et exécuter la commande ci-dessous pour le premier lancement du noeud:
+Il faut ensuite se rendre dans le répertoire du nœud et exécuter la commande ci-dessous pour le premier lancement du nœud:
 ```
   ./bin/elasticsearch --enrollment-token 'enrollment-token'
 ```
@@ -194,7 +192,7 @@ en mettant les adresses des masters
 ```
     sudo adduser elasticsearchrunner
 ```
-Pour donner à cet utilisateur un mot de passe, il faut executer la commande ci-dessous:
+Pour donner à cet utilisateur un mot de passe, il faut exécuter la commande ci-dessous :
 ```
    sudo passwd elasticsearchrunner
 ```
