@@ -207,8 +207,7 @@ write to 0x562e08958ee0 [0x562e0896bcd0] (138 bytes => 138 (0x8A))
 0020 - 9b 4b f8 27 38 19 ae 91-8f 44 5c 00 00 12 c0 0a   .K.'8....D\.....
 0030 - c0 14 c0 09 c0 13 00 35-00 2f 00 39 00 33 00 ff   .......5./.9.3..
 0040 - 01 00 00 46 00 00 00 1e-00 1c 00 00 19 73 72 76   ...F.........srv
-0050 - 2d 61 70 70 33 36 35 2e-74 69 73 73 65 6f 2d 65   -app365.tisseo-e
-0060 - 78 70 2e 64 6f 6d 00 0b-00 04 03 00 01 02 00 0a   xp.dom..........
+0050 - 2d 61 70 70 33 36 35 2e-74 69 73 73 65 6f 2d 65   -name_machine..........
 0070 - 00 0c 00 0a 00 1d 00 17-00 1e 00 19 00 18 00 23   ...............#
 0080 - 00 00 00 16 00 00 00 17-00 00                     ..........
 read from 0x562e08958ee0 [0x562e08962ab3] (5 bytes => 5 (0x5))
@@ -261,13 +260,13 @@ Une fois le HTTPS et SSL installé, les anciennes commandes ne fonctionneront pl
 ```
 Les nouvelles commandes s'exécuteront comme les exemples ci-dessous :
 ```
-    sudo ./bin/kafka-console-consumer.sh --bootstrap-server srv-app365.tisseo-exp.dom:9093 --topic sawadogotestkafka --from-beginning --consumer.config ./client-ssl.properties
+    sudo ./bin/kafka-console-consumer.sh --bootstrap-server adresse_ip_nom_domain_machine:9093 --topic sawadogotestkafka --from-beginning --consumer.config ./client-ssl.properties
 ```
 ```
-    sudo ./bin/kafka-console-producer.sh --broker-list srv-app365.tisseo-exp.dom:9093 --topic sawadogotestkafka --producer.config ./client-ssl.properties
+    sudo ./bin/kafka-console-producer.sh --broker-list adresse_ip_nom_domain_machine:9093 --topic sawadogotestkafka --producer.config ./client-ssl.properties
 ```
 ```
-    sudo ./bin/kafka-consumer-groups.sh --list --bootstrap-server srv-app365.tisseo-exp.dom:9093 --command-config ./client-ssl.properties
+    sudo ./bin/kafka-consumer-groups.sh --list --bootstrap-server adresse_ip_nom_domain_machine:9093 --command-config ./client-ssl.properties
 ```
 
 ## Création de certificat pour un client
@@ -301,9 +300,9 @@ Vous pouvez tester ensuite si le certificat généré fonctionne très bien en p
         bootstrap_servers="url_broker_kafka:9093",
         security_protocol='SSL',
         ssl_check_hostname=False,
-        ssl_cafile="C:/Users/jmsawadogo/Desktop/tesseoProject/CARoot.pem",
-        ssl_certfile="C:/Users/jmsawadogo/Desktop/tesseoProject/certificate.pem",
-        ssl_keyfile="C:/Users/jmsawadogo/Desktop/tesseoProject/key.pem"
+        ssl_cafile="./CARoot.pem",
+        ssl_certfile="./certificate.pem",
+        ssl_keyfile="./key.pem"
     )
     
     import json
@@ -319,9 +318,9 @@ Pour lire le topic maintenant, il faut executer les commandes ci-dessous:
                              group_id = "sawadogo",
                              security_protocol='SSL',
                              ssl_check_hostname=False,
-                             ssl_cafile="C:/Users/jmsawadogo/Desktop/tesseoProject/CARoot.pem",
-                             ssl_certfile="C:/Users/jmsawadogo/Desktop/tesseoProject/certificate.pem",
-                             ssl_keyfile="C:/Users/jmsawadogo/Desktop/tesseoProject/key.pem")
+                             ssl_cafile="./CARoot.pem",
+                             ssl_certfile="./certificate.pem",
+                             ssl_keyfile="./key.pem")
                              
    for message in consumer:
         print(message)
