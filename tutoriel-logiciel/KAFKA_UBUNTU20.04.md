@@ -419,8 +419,4 @@ Il faut ensuite executer les commandes ci-dessous:
 ```
     sudo systemctl status kafka
 ```
-# création et Activation du systemd pour elasticsearch
-to do
 
-# création et Activation du systemd pour Kibana
-to do
