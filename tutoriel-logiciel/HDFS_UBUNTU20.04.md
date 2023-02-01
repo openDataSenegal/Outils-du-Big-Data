@@ -38,18 +38,88 @@ Il faut ensuite télécharger et décompresser les binaires de HDFS avec les com
   wget https://downloads.apache.org/hadoop/common/hadoop-3.3.4/hadoop-3.3.4.tar.gz
   tar xzf hadoop-3.3.4.tar.gz
  ```
+Il faut ensuite modifier le fichier hadoop-env.sh de HDFS en utilisant la commande ci-dessous qui utilise la variable d'environement HADOOP_HOME qui definie le chemin vers hadoop 
+```
+  sudo nano $HADOOP_HOME/etc/hadoop/hadoop-env.sh
+```
+ajouter dans ce fichier la définition de la variable d'envirronement JAVA_HOME
+```
+  export JAVA_HOME=/usr/lib/jvm/java-8-openjdk-amd64
+```
+Pour trouver ce chelin, executer les commandes ci-dessous :
+```
+    which javac
+    readlink -f /usr/bin/javac
+```
+ou /usr/bin/javac est le resultat donné par la commande which javac.
+
+Modifier ensuite le fichier core-site.xml en utilisant la commande ci-dessous:
+```
+  sudo nano $HADOOP_HOME/etc/hadoop/core-site.xml
+```
+Ajouter dans ce fichier les configurations ci-dessous : 
+
+```
+  <property>
+        <name>fs.defaultFS</name>
+        <value>hdfs://localhost:9000</value>
+  </property>
+
+```
+Ajouter les configurations ci-dessous aux fichier hdfs-site.xml en utilisant la commande ci-dessous:
+```
+  <property>
+    <name>dfs.data.dir</name>
+    <value>/data-hdfs/dfsdata/namenode</value>
+  </property>
+  <property>
+    <name>dfs.data.dir</name>
+    <value>/data-hdfs/dfsdata/datanode</value>
+  </property>
+  <property>
+    <name>dfs.namenode.name.dir</name>
+    <value>/data-hdfs/dfsdata/namenode</value>
+  </property>
+  <property>
+    <name>dfs.datanode.data.dir</name>
+    <value>/data-hdfs/dfsdata/datanode</value>
+  </property>
+  <property>
+    <name>dfs.replication</name>
+    <value>2</value>
+  </property>
+```
+Ou le repertoire /data-hdfs/dfsdata/ a été créé par nous et est destiné à contenir dans ces sous-repertoire datanode et namenode les données des datanodes et des namenodes
+dfs.replication Spécifie le nombre de réplicat qu'on veut réaliser
+Après cela, il faut formater les repertoires avec le commande suivante:
+```
+  ./bin/hdfs namenode -format
+```
+Une fois ces opérations réalisées, notre cluster est pret a etre lancer, pour cela executer les commandes ci-dessous pour lancer le datanode et le namenode dans deux terminales différents
+```
+  ./bin/hdfs namenode
+  ./bin/hdfs datnode
+```
+On peut ensuite vérifier ci le cluster fonctionne très bien en executant la commande 
+```
+  ./bin/hdfs dfs -ls /
+```
+# Connecter HDFS avec python en utilisant l'API REST
+HDFS dispose d'une API qui permet de réaliser des opérations dessus. On peut utiliser la librairie python hdfs pour se connecter au cluster grace à l'API
+```
+  import hdfs
+  client = hdfs.InsecureClient("http://adress_ip:9870")
+
+  # Affichage des données à la racine
+  # l'appel à "list()" renvoie une liste de noms de fichiers et de
+  # répertoires
+  #client.list("/")
+# Ajouter un nouveau Noeuds
 to do
-
-
-
-
-
-
-
-
-
-
-
+# Configurer le HTTPS
+to do
+# Configurer l'authentification
+to do
 
 
 
