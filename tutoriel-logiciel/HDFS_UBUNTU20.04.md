@@ -32,6 +32,21 @@ Actualisez la mise à jour du fichier .bashrc avec la commande :
   source ~/.bashrc
 ```
 
+# Téléchargement et configuration de HDFS
+Il faut ensuite télécharger et décompresser les binaires de HDFS avec les commandes ci-dessous:
+```
+  wget https://downloads.apache.org/hadoop/common/hadoop-3.3.4/hadoop-3.3.4.tar.gz
+  tar xzf hadoop-3.3.4.tar.gz
+ ```
+to do
+
+
+
+
+
+
+
+
 
 
 
