@@ -113,12 +113,18 @@ HDFS dispose d'une API qui permet de réaliser des opérations dessus. On peut u
   # Affichage des données à la racine
   # l'appel à "list()" renvoie une liste de noms de fichiers et de
   # répertoires
-  #client.list("/")
+  client.list("/")
+```
 # Ajouter un nouveau Noeuds
+
 to do
+
 # Configurer le HTTPS
+
 to do
+
 # Configurer l'authentification
+
 to do
 
 
