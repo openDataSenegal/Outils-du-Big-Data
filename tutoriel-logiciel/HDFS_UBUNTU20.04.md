@@ -120,9 +120,23 @@ HDFS dispose d'une API qui permet de réaliser des opérations dessus. On peut u
 to do
 
 # Configurer le HTTPS
-
-to do
-
+Pour configurer la connexion HTTPS de hadoop, il faut créer un repertoire certifs dans le repertoire de hadoop (hadoop-3.3.4) et se placer dessus et suivre les étapes suivantes:
+ -  Il faut generer le keystore pour chaque noeuds avec la commande ci-dessous:
+   ```
+      keytool -genkey -keyalg RSA -alias c6401 -keystore keystore.jks -storepass bigdata -validity 360 -keysize 2048
+   ```
+  Cette commande va générer un fichier keystore.jks dans le repertoire certifs.
+  - Il faut ensuite générer le CRS du keystore avec la commande ci-dessus : 
+   ```
+      keytool -certreq -alias c6401 -keyalg RSA -file c6401.csr -keystore keystore.jks -storepass bigdata
+   ```
+   Cette commande va générer un fichier c6401.csr dans le repertoire certifs
+  - Créer le fichier cert à partir du CA avec la commande ci-dessous: 
+   ```
+      keytool -import -alias root -file ca.crt -keystore keystore.jks
+   ```
+   
+  
 # Configurer l'authentification
 
 to do
