@@ -111,7 +111,7 @@ Il faut ensuite générer les certificats avec les commandes ci-dessous:
 
 Une fois les certificats https générés, il faut changer la configuration de la variable d'environnement MINIO_OPTS :
 ```
-    export MINIO_OPTS="--certs-dir /root/.minio/certs --console-address :9001"
+    export MINIO_OPTS="--certs-dir /chemin_vers_les_certs/.minio/certs --console-address :9001"
 ```
 On peut alors relancer le MinIO en utilisant les commandes ci-dessous.
 
