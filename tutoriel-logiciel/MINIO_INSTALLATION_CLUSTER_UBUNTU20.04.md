@@ -37,9 +37,98 @@ Il faut ensuite télécharger le binaire de MinIO destiné à Linux et le mettre
   chmod +x minio
   sudo mv minio /usr/local/bin/
 ```
+## SystemD
+Il faut créer ensuite un systemD pour permettre le démarrage et l'allumage en utilisant le systemD. Pour cela, il faut créer un fichier nommé minio.service dans le répertoire/etc/systemd/system et le remplir comme ci-dessous:
+```
+  [Unit]
+  Description=MinIO
+  Documentation=https://min.io/docs/minio/linux/index.html
+  Wants=network-online.target
+  After=network-online.target
+  AssertFileIsExecutable=/usr/local/bin/minio
 
+  [Service]
+  WorkingDirectory=/usr/local
 
+  User=minio-user
+  Group=minio-user
+  ProtectProc=invisible
 
+  EnvironmentFile=-/etc/default/minio
+  ExecStartPre=/bin/bash -c "if [ -z \"${MINIO_VOLUMES}\" ]; then echo \"Variable MINIO_VOLUMES not set in /etc/default/minio\"; exit 1; fi"
+  ExecStart=/usr/local/bin/minio server $MINIO_OPTS $MINIO_VOLUMES
+
+  # Let systemd restart this service always
+  Restart=always
+
+  # Specifies the maximum file descriptor number that can be opened by this process
+  LimitNOFILE=65536
+
+  # Specifies the maximum number of threads this process can create
+  TasksMax=infinity
+
+  # Disable timeout logic and wait until process is stopped
+  TimeoutStopSec=infinity
+  SendSIGKILL=no
+
+  [Install]
+  WantedBy=multi-user.target
+
+  # Built for ${project.name}-${project.version} (${project.name})
+```
+## Définition des variables d'environnement 
+Il faut définir les variables d'environnement qui seront utilisées par systemd:
+```
+    export Minio PassWord = mot_de_passeçadmin
+    export MINIO_ROOT_USER=user_name_compte_admin
+    export MINIO_ROOT_PASSWORD=mot_de_pass_compte_admin
+    export MINIO_VOLUMES=path_du_repertoire_ou_seront_stoques_les_donnes
+    export MINIO_OPTS="--console-address :9001"
+    export MINIO_SERVER_URL="http://adress_ip_1:9000"
+```
+## Démarage de MinIO
+
+Une fois les variables d'environnement configuré, on peut démarrer MinIO en exécutant la commande du systemD suivante :
+
+```
+  systemctl start minio.service
+```
+Alors MinIO sera fonctionnel et vous pourrez y accéder en utilisant l'URL adress_ip_1 sur le port 9000 et utilisant les authentifications définies dans les variables d'environnement.
+
+## Configuration du HTTPS
+
+Pour configurer le HTTPS, il faut générer un certificat valide par rapport à l'url utilisé pour MinIO. Si on a auto-généré notre certificat, alors on aura besoin de le signer nous-même pour cela, nous allons utiliser l'outil [certgen](https://github.com/minio/certgen/releases).
+
+Télécharger et installer certgen en exécutant les commandes suivantes : 
+```
+  wget https://github.com/minio/certgen/releases/download/v1.2.1/certgen-linux-amd64
+  install certgen-linux-amd64 certgen
+```
+Il faut ensuite générer les certificats avec les commandes ci-dessous:
+```
+  ./certgen -host "localhost,minio-*.panongbene.com"
+```
+
+Une fois les certificats https générés, il faut changer la configuration de la variable d'environnement MINIO_OPTS :
+```
+    export MINIO_OPTS="--certs-dir /root/.minio/certs --console-address :9001"
+```
+On peut alors relancer le MinIO en utilisant les commandes ci-dessous.
+
+```
+  systemctl daemon-reload
+  systemctl stop minio.service
+  systemctl start minio.service
+```
+Alors le serveur MinIO sera accessible en https à l'adresse https://adress_ip_1:9000.
+
+Pour voir les logs d'un systemD faire :
+```
+  journalctl -f -u minio.service
+```
+# Installation du Nœud MinIO sur la machine2
+
+to do
 
 
 
