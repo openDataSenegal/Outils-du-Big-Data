@@ -101,12 +101,12 @@ Pour configurer le HTTPS, il faut générer un certificat valide par rapport à 
 
 Télécharger et installer certgen en exécutant les commandes suivantes : 
 ```
-  wget https://github.com/minio/certgen/releases/download/v1.2.1/certgen-linux-amd64
-  install certgen-linux-amd64 certgen
+  wget https://github.com/minio/certgen/releases/download/v1.2.0/certgen_1.2.0_linux_amd64.deb
+  sudo dpkg -i certgen_1.2.0_linux_amd64.deb
 ```
 Il faut ensuite générer les certificats avec les commandes ci-dessous:
 ```
-  ./certgen -host "localhost,minio-*.panongbene.com"
+   sudo certgen -host minio1.panongbene.com,adress_ip_1
 ```
 
 Une fois les certificats https générés, il faut changer la configuration de la variable d'environnement MINIO_OPTS :
