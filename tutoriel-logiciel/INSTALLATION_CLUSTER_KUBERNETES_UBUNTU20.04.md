@@ -55,8 +55,21 @@ Configuration
     sudo ufw allow 6443/tcp
  ```
  
+ Commandes utiles
+ ```
+    kubectl get pods
+    kubectl get service
+    kubectl version --client -o json
+    kubectl get pods --all-namespaces
+    kubectl get namespaces
+ ```
  
  
+ 
+ 
+ 
+ 
+ Ce tuto n'est pas encore terminé
  
  
  
