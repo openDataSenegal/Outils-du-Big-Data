@@ -51,7 +51,9 @@ Configuration
     sudo cp -i /etc/kubernetes/admin.conf $HOME/.kube/config
     sudo chown $(id -u):$(id -g) $HOME/.kube/config
  ```
- 
+ ```
+    sudo ufw allow 6443/tcp
+ ```
  
  
  
