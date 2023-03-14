@@ -64,6 +64,9 @@ Configuration
     kubectl get namespaces
     kubectl get svc
     kubectl config view
+    kubectl config get-contexts
+    kubectl get pods -o wide
+    kubectl events --types=Warning
  ```
  
  
