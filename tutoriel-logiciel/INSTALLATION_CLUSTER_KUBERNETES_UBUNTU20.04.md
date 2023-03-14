@@ -63,6 +63,7 @@ Configuration
     kubectl get pods --all-namespaces
     kubectl get namespaces
     kubectl get svc
+    kubectl config view
  ```
  
  
