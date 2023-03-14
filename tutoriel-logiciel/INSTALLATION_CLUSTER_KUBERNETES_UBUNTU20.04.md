@@ -62,6 +62,7 @@ Configuration
     kubectl version --client -o json
     kubectl get pods --all-namespaces
     kubectl get namespaces
+    kubectl get svc
  ```
  
  
