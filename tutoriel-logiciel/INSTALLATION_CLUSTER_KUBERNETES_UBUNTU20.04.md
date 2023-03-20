@@ -3,12 +3,11 @@ Ce tutoriel explique l'installation d'un cluster Kubernete sur des machines équ
 Dans ce tutoriel, on expliquera l'installation de la dernière version de Kubernetes. On se limitera à l'installation d'un cluster Kubernetes composé de deux nœuds.
 
 # Installation des outils Annexes
-On commence par mettre à jours le systeme ubuntu avec les commandes suivantes :
-
-      ```
-         sudo apt update
-         sudo apt upgrade
-      ```
+On commence par mettre à jours le systeme ubuntu avec les commandes suivantes:
+ ```
+      sudo apt update
+      sudo apt upgrade
+ ```
 Il faut ensuite installer docker s'il n'est pas deja installé dans le système. Pour cela, on utilise les commandes suivantes :
 
       ```
