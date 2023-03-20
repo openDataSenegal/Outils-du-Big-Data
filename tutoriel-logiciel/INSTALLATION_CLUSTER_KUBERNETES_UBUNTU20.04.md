@@ -4,11 +4,13 @@ Dans ce tutoriel, on expliquera l'installation de la dernière version de Kubern
 
 # Installation des outils Annexes
 On commence par mettre à jours le systeme ubuntu avec les commandes suivantes :
+
       ```
          sudo apt update
          sudo apt upgrade
       ```
 Il faut ensuite installer docker s'il n'est pas deja installé dans le système. Pour cela, on utilise les commandes suivantes :
+
       ```
          sudo apt install docker.io
          docker ––version
@@ -51,22 +53,43 @@ On peut verifier si l'installation de kubeadm s'est bien passé en regardant la 
 # Parametrage de Kubernetes
 
 Une fois l'installation de Kubernetes reussi, il faudra le parametrer. Pour cela, il faut commencer par desactivé la memoire swap avec la commande ci-dessous :
+
       ```
          swapoff –a
       ```
+      
 Ensuite, assigner un nom de hote aux noeuds avec les commandes ci-dessous:
+
       ```
          sudo hostnamectl set-hostname master-node
          sudo hostnamectl set-hostname w1
       ```
       
-
+Configuration du noeuds
       ```
          sudo kubeadm init --pod-network-cidr=10.244.0.0/16
          mkdir -p $HOME/.kube
          sudo cp -i /etc/kubernetes/admin.conf $HOME/.kube/config
          sudo chown $(id -u):$(id -g) $HOME/.kube/config         
       ```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -123,16 +146,6 @@ Configuration
     kubectl get pods -o wide
     kubectl events --types=Warning
  ```
- 
- 
- 
- 
- 
- 
- Ce tuto n'est pas encore terminé
- 
- 
- 
  
  
  
